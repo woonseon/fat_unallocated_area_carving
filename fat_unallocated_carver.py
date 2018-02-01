@@ -68,7 +68,7 @@ def Fat_1(fat_start):
 	print("==============FAT==============")
 	print()
 
-	for i in range(2, fat_size//4+1):
+	for i in range(2, fat_size//4+1-4):
 		address = 0x4*i
 		data_cluster = struct.unpack_from("<I", fat_start, address)[0]
 		if data_cluster == 0:
@@ -100,9 +100,7 @@ def Fat_1(fat_start):
 			
 		else:
 			continue
-	print("End!!")
-
-
+	
 def Extract_file(file_signature, data):
 	#png
 	if file_signature == 0x89504e47:
@@ -127,23 +125,39 @@ def Extract_file(file_signature, data):
 		else:
 			return 7
 
+def select_menu():
+	print("************************************************")
+	print("************************************************\n")
+	print("Welcome to FAT carver!!")
+	print("\n************************************************")
+	print("************************************************\n")
+	volume_name = input("Put want to see volume: ")
+	return volume_name
+
+def main(volume_name):
+	# volume open
+	global f
+	try:
+		f = open("\\\\.\\"+volume_name+":", "rb")
+	
+		# Get vbr
+		f.seek(0)
+		vbr = f.read(512)
+		VBR(vbr)
+
+		# Get fsinfo
+		f.seek(512)
+		vol_h = f.read(512)
+		Fsinfo(vol_h)
+
+		# Get fat
+		fat_start = bytes_per_sector*reserved_sector_count
+		f.seek(fat_start)
+		fat_start = f.read(fat_size)
+		Fat_1(fat_start)
+	except:
+		print("Push right volume name")
+
 if __name__ == "__main__":
-	f = open("\\\\.\\G:", "rb")
-	# Get vbr
-	f.seek(0)
-	vbr = f.read(512)
-	VBR(vbr)
-
-	# Get fsinfo
-	f.seek(512)
-	vol_h = f.read(512)
-	Fsinfo(vol_h)
-
-	# Get fat
-	fat_start = bytes_per_sector*reserved_sector_count
-	f.seek(fat_start)
-	fat_start = f.read(fat_size)
-	Fat_1(fat_start)
-
-
-
+	volume_name = select_menu()
+	main(volume_name)
