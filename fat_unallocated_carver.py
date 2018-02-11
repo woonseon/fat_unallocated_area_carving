@@ -80,27 +80,27 @@ def Fat_carving(fat_start):
 				file_signature = struct.unpack_from(">I", data, 0x0)[0]
 
 				if(Extract_file(file_signature, data) == 1):
-					print(str(i-1)+"-png")
+					print(str(i)+"-png")
 				elif(Extract_file(file_signature, data) == 2):
-					print(str(i-1)+"-jpeg")
+					print(str(i)+"-jpeg")
 				elif(Extract_file(file_signature, data) == 3):
-					print(str(i-1)+"-pdf")
+					print(str(i)+"-pdf")
 				elif(Extract_file(file_signature, data) == 4):
-					print(str(i-1)+"-zip[docx]")
+					print(str(i)+"-zip[docx]")
 				elif(Extract_file(file_signature, data) == 5):
-					print(str(i-1)+"-zip[xlsx]")
+					print(str(i)+"-zip[xlsx]")
 				elif(Extract_file(file_signature, data) == 6):
-					print(str(i-1)+"-zip[pptx]")
+					print(str(i)+"-zip[pptx]")
 				elif(Extract_file(file_signature, data) == 7):
 					zip_file_name_length = struct.unpack_from("<H", data, 0x1a)[0]
 					zip_file_name = struct.unpack_from("<"+str(zip_file_name_length)+"s", data, 0x1e)[0]
-					print(str(i-1)+"-zip"+"{"+str(zip_file_name.decode('UTF-8'))+"}")
+					print(str(i)+"-zip"+"{"+str(zip_file_name.decode('UTF-8'))+"}")
 				elif(Extract_file(file_signature, data) == 8):
-					print(str(i-1)+"-mp4")
+					print(str(i)+"-mp4")
 				elif(Extract_file(file_signature, data) == 9):
-					print(str(i-1)+"-avi")
+					print(str(i)+"-avi")
 				elif(Extract_file(file_signature, data) == 10):
-					print(str(i-1)+"-hwp")
+					print(str(i)+"-hwp")
 				else:
 					continue
 				
